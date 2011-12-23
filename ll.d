@@ -6,9 +6,6 @@ abstract class Production{
 	static Nonterminal[] [string] rules;
 	static string[string] types;
 	static add_rules(string[] rules ...){
-		foreach(string rule ; rules){
-			Production.rules[rule] = [];
-		}
 		assert(rules.length % 2 == 0);
 		for (int i = 0; i < rules.length; i++){
 			auto rule = rules[i++];
@@ -56,10 +53,10 @@ abstract class Production{
 		}
 	}
 	
-	static Production [Terminal][string] predictive_table;
+	static Nonterminal [Terminal][string] predictive_table;
 	static void construct(){
 		foreach (string X, Nonterminal[] nonterminals; Production.rules){
-			Production[Terminal] cache;
+			Nonterminal[Terminal] cache;
 			predictive_table[X] = cache;
 			foreach (Nonterminal alpha; nonterminals){
 				Terminal[] first_set = alpha.first;

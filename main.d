@@ -1,5 +1,5 @@
 import std.stdio, std.cstream;
-import ll;
+import ll, codegen;
 
 void main(string[] args)
 {
@@ -46,11 +46,14 @@ void main(string[] args)
 	Production.compute_follow;
 	Production.construct;
 	
-	foreach(string s, Production[Terminal] row; Production.predictive_table){
-		write(s, "\t");
-		foreach(Terminal t, _; row){
-			write(t," ");	
-		}
-		writeln();
-	}
+	//foreach(string s, Nonterminal[Terminal] row; Production.predictive_table){
+		//write(s, "\t");
+		//foreach(Terminal t, _; row){
+			//write(t," ", _.cat);	
+		//}
+		//writeln();
+	//}
+	
+	CodeGen cg = new CodeGen(Production.predictive_table, Production.types);
+	cg.generate;
 }

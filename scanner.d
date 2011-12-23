@@ -1,7 +1,7 @@
 ﻿module scanner;
 import stack;
 
-class token{
+class Token{
 	string value;
 	string type;
 	
@@ -11,37 +11,37 @@ class token{
 	}
 	
 	override bool opEquals(Object that){
-		token other = cast(token)that;
+		Token other = cast(Token) that;
 		return value == other.value && type == other.type;
 	}
 }
 
-class scanner{
+class Scanner{
 	// token stream
-	Queue!token stream;
+	Queue!Token stream;
 	this(){
-		stream = new Queue!token;	
+		stream = new Queue!Token;	
 	}
 	
 	bool empty(){
 		return stream.empty;	
 	}
 	
-	token next(){
+	Token next(){
 		return stream.peek;
 	}
 	
-	token read(){
+	Token read(){
 		return stream.pop;
 	}
 	
-	token read(string type){
-		token t = read;
+	Token read(string type){
+		Token t = read;
 		assert(t.type == type);
 		return t;
 	}
 	
-	void write(token t){
+	void write(Token t){
 		stream.push(t);
 	}
 }
