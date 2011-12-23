@@ -1,4 +1,5 @@
 ﻿module scanner;
+import stack;
 
 class token{
 	string value;
@@ -16,5 +17,9 @@ class token{
 }
 
 class scanner{
-	
+	// token stream
+	Queue!token stream;
+	this(){
+		stream = new Queue!token;	
+	}
 }

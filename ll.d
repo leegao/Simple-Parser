@@ -64,7 +64,7 @@ abstract class Production{
 			foreach (Nonterminal alpha; nonterminals){
 				Terminal[] first_set = alpha.first;
 				foreach (Terminal t; first_set){
-					if (t.c == '\0'){
+					if (t.c == "\0"){
 						foreach (Terminal f; FOLLOW[X]){
 							assert (!(f in predictive_table[X]));
 							predictive_table[X][f] = alpha;
@@ -114,8 +114,8 @@ void get_next(Nonterminal[] productions, string X, ref string[string] nullable, 
 					app2.put(first_set);	
 				}
 			} else {
-				app2.put(Terminal[cast(char) next[0]]);
-				if (next[0] == '\0')
+				app2.put(Terminal[next]);
+				if (next == "\0")
 					is_nullable = true;
 			}
 			app.put(terminals.set_minus_epsilon);
@@ -131,11 +131,11 @@ void get_next(Nonterminal[] productions, string X, ref string[string] nullable, 
 }
 
 class Terminal : Production{
-	char c;
-	static Terminal[char] terminals;
-	this(char c){
+	string c;
+	static Terminal[string] terminals;
+	this(string c){
 		this.c = c;
-		this.nullable = (c == '\0');
+		this.nullable = (c == "\0");
 		Terminal.terminals[c] = this;
 	}
 	
@@ -144,12 +144,12 @@ class Terminal : Production{
 	}
 	
 	string toString(){
-		if (c == '\0')
+		if (c == "\0")
 			return r"\0";
-		return format("%s", c);
+		return c;
 	}
 	
-	static ref Terminal opIndex(char c){
+	static ref Terminal opIndex(string c){
 		if (!(c in terminals)) 
 			new Terminal(c);
 		return terminals[c];
@@ -188,7 +188,7 @@ class Nonterminal : Production{
 					break;
 			} else {
 				// only append the first element
-				app.put(Terminal[cast(char) rule[0]]);
+				app.put(Terminal[rule]);
 				break;
 			}
 		}
@@ -201,7 +201,7 @@ class Nonterminal : Production{
 
 bool contains_null(Terminal[] first){
 	foreach(Terminal t; first){
-		if (t.c == '\0')
+		if (t.c == "\0")
 			return true;
 	}
 	return false;
@@ -223,7 +223,7 @@ Terminal[] set(Terminal[] first){
 Terminal[] set_minus_epsilon(Terminal[] first){
 	Terminal[] terminals;	
 	bool[Terminal] seen;
-	seen[Terminal['\0']] = true;
+	seen[Terminal["\0"]] = true;
 	auto app = std.array.appender(&terminals);
 	foreach(Terminal t; first){
 		if (!(t in seen)){
