@@ -22,4 +22,26 @@ class scanner{
 	this(){
 		stream = new Queue!token;	
 	}
+	
+	bool empty(){
+		return stream.empty;	
+	}
+	
+	token next(){
+		return stream.peek;
+	}
+	
+	token read(){
+		return stream.pop;
+	}
+	
+	token read(string type){
+		token t = read;
+		assert(t.type == type);
+		return t;
+	}
+	
+	void write(token t){
+		stream.push(t);
+	}
 }
