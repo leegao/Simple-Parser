@@ -1,7 +1,7 @@
 ﻿module ll_lex;
 
 import scanner;
-import std.stream;
+import std.stream, std.string, std.stdio;
 
 // really simple lexer.
 // tokenize on space, but discard // lines and group {: ... :} (non-greedy) as code
@@ -16,7 +16,7 @@ class SimpleLexer{
 		this.already_read = new stack.Queue!char;
 		whitespace = [' ':true,'\t':true,'\n':true,'\r':true];
 		separators = [' ':true,'\t':true,'\n':true,'\r':true, '|':true, ';':true];
-		reserved = ["|":"LL-OR", "production":"LL-PRODUCTION"];
+		reserved = ["|":"LL-OR", "::=":"LL-GETS", "production":"LL-PRODUCTION", ";":"LL-SEMI"];
 	}
 	
 	string[string] reserved;// = ["|":"LL-OR", "production":"LL-PRODUCTION"];
@@ -50,13 +50,14 @@ class SimpleLexer{
 				stream.read(c);
 				already_read.push(c);
 			}
-			already_read.prepare;
+			cur = already_read.size;
 		}
+		
 		char[] s = new char[n];
 		// invariant here: queue's out_stack contains the data
-		for (int i = 1; i <= n; i++){
-			if (cur-1-i >= 0)
-				s[i-1] = already_read.out_stack.store[cur-1-i];
+		for (int i = 0; i < n; i++){
+			if (i < already_read.size)
+				s[i] = already_read[i];
 		}
 		
 		return cast(string) s;
@@ -111,13 +112,14 @@ class SimpleLexer{
 				// invariant, must have at least 2 chars
 				try{
 					c = get;
+					
 					char c2 = get;
 					char[] buf;
 					auto app = std.array.appender(&buf);
+					//app.put(c);
 					while(!(c==':' && c2 == '}')){
 						app.put(c);
-						app.put(c2);
-						c = get;
+						c = c2;
 						c2 = get;
 					}
 					return new Token(cast(string)buf, "LL-CODE");
@@ -143,10 +145,13 @@ class SimpleLexer{
 		char[] buf;
 		auto app = std.array.appender(&buf);
 		try{
-			c = get();
+			get;
+			app.put(c);
+			c = next;
 			while (!(c in separators)){
+				get;
 				app.put(c);
-				c = get();
+				c = next;
 			}
 		} catch (ReadException e){
 			// pass

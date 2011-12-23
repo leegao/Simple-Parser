@@ -1,5 +1,6 @@
 import std.stdio, std.cstream;
 import ll, codegen, scanner;
+import stack;
 
 void main(string[] args)
 {
@@ -57,19 +58,13 @@ void main(string[] args)
 	
 	//f.write(code);
 	
-	Scanner scanner = new Scanner;
-	// code -> << > + - [ + - ]
-	scanner.write(new Token(">", ">"));
-	scanner.write(new Token("<", "<"));
-	scanner.write(new Token("+", "+"));
-	scanner.write(new Token("[", "["));
-	scanner.write(new Token("+", "+"));
-	scanner.write(new Token("-", "-"));
-	scanner.write(new Token("]", "]"));
-	scanner.write(new Token("", "EOF"));
+	auto f = new std.stream.File("../grammar.y");
+	import ll_lex;
 	
-	writeln(scanner.stream.in_stack.peek);
-	
-	import parser;
-	parse_Expression(scanner);
+	SimpleLexer lex = new SimpleLexer(f);
+	Token t = lex.read;
+	while (t.type != "EOF"){
+		writefln("%s	%s", t.type, t.value);
+		t = lex.read;
+	}
 }

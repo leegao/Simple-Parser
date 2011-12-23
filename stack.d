@@ -1,5 +1,5 @@
 ﻿module stack;
-import std.array;
+import std.array, std.stdio;
 class Stack(T){
 	T[] store;
 	int i;
@@ -47,15 +47,22 @@ class Queue(T){
 		in_stack.push(s);	
 	}
 	
-	void prepare(){
-		while(!in_stack.empty){
-			out_stack.push(in_stack.pop);
+	T opIndex(int i){
+		if (i >= size)
+			return cast(T)null;
+		//writeln(size, " ", i);
+		//writeln();
+		if (i < out_stack.i){
+			return out_stack.store[out_stack.i -i - 1];
+		} else {
+			i -= out_stack.i;
+			//int n = out_stack.i - 1 - i;
+			return in_stack.store[i];
 		}
 	}
 	
 	int size(){
-		prepare;
-		return out_stack.i;
+		return in_stack.i+out_stack.i;
 	}
 	
 	T pop(){
