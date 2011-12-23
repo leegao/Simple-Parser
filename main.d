@@ -1,5 +1,5 @@
 import std.stdio, std.cstream;
-import ll, codegen, parser, scanner;
+import ll, codegen, scanner;
 
 void main(string[] args)
 {
@@ -14,7 +14,7 @@ void main(string[] args)
 	
 	// Operators -> > | < | + | - | . | ,
 	Production.rules["Operators"] = [
-		[">>"].rule(ez_code), 
+		[">"].rule(ez_code), 
 		["<"].rule(ez_code), 
 		["+"].rule(ez_code), 
 		["-"].rule(ez_code), 
@@ -40,8 +40,8 @@ void main(string[] args)
 	//              | EOF
 	//              | epsilon
 	Production.rules["Expression_"] = [
-			["Expression"].rule("return _1;"),
-			["EOF"].rule("return \"\";"),
+			["Expression"].rule("writefln(\"E' -> E: %s\",_1);return _1;"),
+			["EOF"].rule("writeln(\"EOF\");return \"\";"),
 			["\0"].rule("return \"\";")
 		].production;
 	
@@ -52,14 +52,14 @@ void main(string[] args)
 	cg.usercode = "import std.stdio;\n";
 	string code = cg.generate;
 	
-	//auto f = std.stdio.File("../parser.d", "w");
-    //scope(exit) f.close();
+	auto f = std.stdio.File("../parser.d", "w");
+    scope(exit) f.close();
 	
-	//f.write(code);
+	f.write(code);
 	
 	Scanner scanner = new Scanner;
 	// code -> << > + - [ + - ]
-	scanner.write(new Token(">>", ">>"));
+	scanner.write(new Token(">", ">"));
 	scanner.write(new Token("<", "<"));
 	scanner.write(new Token("+", "+"));
 	scanner.write(new Token("[", "["));
@@ -69,5 +69,7 @@ void main(string[] args)
 	scanner.write(new Token("", "EOF"));
 	
 	writeln(scanner.stream.in_stack.peek);
+	
+	import parser;
 	parse_Expression(scanner);
 }

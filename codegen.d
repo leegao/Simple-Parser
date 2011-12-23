@@ -49,11 +49,11 @@ class CodeGen{
 					i++;
 				}
 				//std.string.translate(current, ['\n':"\n\t\t\t"]);
-				current = current ~ "\t\t _ll_result = {\n\t\t\t%s\n\t\t}();\n".format(n.code.translate(['\n':"\n\t\t\t"]));
+				current = current ~ "\t\t_ll_result = {\n\t\t\t%s\n\t\t}();\n".format(n.code.translate(['\n':"\n\t\t\t"]));
 				current = current ~ "\t} else\n";
 			}
-			current = current ~ "\t throw new Exception(\"Cannot parse.\");\n";
-			current = current ~ "\t return _ll_result;\n";
+			current = current ~ "\tthrow new Exception(\"Cannot parse.\");\n";
+			current = current ~ "\treturn _ll_result;\n";
 			current = current ~ "}\n\n";
 			code = code ~ current;
 		}
