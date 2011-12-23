@@ -37,7 +37,7 @@ abstract class Production{
 		
 		// reduce a worklist of follows
 		// construct a queue of worklist
-		stack worklist = new stack;
+		auto worklist = new Queue!string;
 		foreach (string X, _; nullable){
 			worklist.push(X);	
 		}
