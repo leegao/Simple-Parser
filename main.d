@@ -52,10 +52,10 @@ void main(string[] args)
 	cg.usercode = "import std.stdio;\n";
 	string code = cg.generate;
 	
-	auto f = std.stdio.File("../parser.d", "w");
-    scope(exit) f.close();
+	//auto f = std.stdio.File("../parser.d", "w");
+    //scope(exit) f.close();
 	
-	f.write(code);
+	//f.write(code);
 	
 	Scanner scanner = new Scanner;
 	// code -> << > + - [ + - ]

@@ -47,6 +47,17 @@ class Queue(T){
 		in_stack.push(s);	
 	}
 	
+	void prepare(){
+		while(!in_stack.empty){
+			out_stack.push(in_stack.pop);
+		}
+	}
+	
+	int size(){
+		prepare;
+		return out_stack.i;
+	}
+	
 	T pop(){
 		assert(!empty);
 		if (out_stack.empty){
