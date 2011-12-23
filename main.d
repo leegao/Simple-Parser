@@ -1,5 +1,5 @@
 import std.stdio, std.cstream;
-import ll, codegen;
+import ll, codegen, parser, scanner;
 
 void main(string[] args)
 {
@@ -25,35 +25,49 @@ void main(string[] args)
 	// Expression -> Operators Expression'
 	//             | [ Expression ] Expression'
 	Production.rules["Expression"] = [
-			["Operators", "Expression'"].rule(
+			["Operators", "Expression_"].rule(
 				"writefln(\"E -> O E': %s %s\", _1, _2);\n"
 				"return std.string.format(\"%s %s\", _1, _2);"
 			),
 			
 			["[", "Expression", "]", "Expression_"].rule(
-				"writefln(\"E -> [E] E': [%s] %s\", _1, _2);\n"
-				"return std.string.format(\"[%s] %s\", _1, _2);"
+				"writefln(\"E -> [E] E': [%s] %s\", _2, _4);\n"
+				"return std.string.format(\"[%s] %s\", _2, _4);"
 			)
 		].production;
 	
 	// Expression' -> Expression
+	//              | EOF
 	//              | epsilon
 	Production.rules["Expression_"] = [
 			["Expression"].rule("return _1;"),
+			["EOF"].rule("return \"\";"),
 			["\0"].rule("return \"\";")
 		].production;
 	
 	Production.compute_follow;
 	Production.construct;
 	
-	//foreach(string s, Nonterminal[Terminal] row; Production.predictive_table){
-		//write(s, "\t");
-		//foreach(Terminal t, _; row){
-			//write(t," ", _.cat);	
-		//}
-		//writeln();
-	//}
-	
 	CodeGen cg = new CodeGen(Production.predictive_table, Production.types);
-	cg.generate;
+	cg.usercode = "import std.stdio;\n";
+	string code = cg.generate;
+	
+	//auto f = std.stdio.File("../parser.d", "w");
+    //scope(exit) f.close();
+	
+	//f.write(code);
+	
+	Scanner scanner = new Scanner;
+	// code -> << > + - [ + - ]
+	scanner.write(new Token(">>", ">>"));
+	scanner.write(new Token("<", "<"));
+	scanner.write(new Token("+", "+"));
+	scanner.write(new Token("[", "["));
+	scanner.write(new Token("+", "+"));
+	scanner.write(new Token("-", "-"));
+	scanner.write(new Token("]", "]"));
+	scanner.write(new Token("", "EOF"));
+	
+	writeln(scanner.stream.in_stack.peek);
+	parse_Expression(scanner);
 }

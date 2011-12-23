@@ -22,7 +22,7 @@ class Stack(T){
 	
 	ref T peek(){
 		assert(!empty);
-		return store[i];
+		return store[i-1];
 	}
 	
 	T pop(){

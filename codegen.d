@@ -6,17 +6,24 @@ import ll;
 class CodeGen{
 	Nonterminal[Terminal][string] table;
 	string[string] types;
+	string usercode = "";
 	this(Nonterminal[Terminal][string] table, string[string] types) {
 		this.table = table;
 		this.types = types;
 	}
 	
+	string prolog(){
+		string code = "import scanner;\n";
+		code = code ~ "%s\n".format(usercode);
+		return code;
+	}
+	
 	string generate(){
+		string code = prolog;
 		foreach (string rule, Nonterminal[Terminal] productions; table){
-			writeln(rule);
 			// set up the function rule
 			string current = "%s parse_%s(Scanner _ll_scanner){\n".format(types[rule],rule);
-			current = current ~ "\t%s _ll_return;\n".format(types[rule]);
+			current = current ~ "\t%s _ll_result;\n".format(types[rule]);
 			current = current ~ "\tauto _ll_next = _ll_scanner.next;\n";
 			foreach (Terminal t, Nonterminal n; productions){
 				current = current ~ "\tif (_ll_next.type == \"%s\"){\n".format(t.c);
@@ -41,15 +48,16 @@ class CodeGen{
 					}
 					i++;
 				}
-				current = current ~ "\t\t _ll_result = {\n\t\t\t%s\n\t\t}();\n".format(n.code);
+				//std.string.translate(current, ['\n':"\n\t\t\t"]);
+				current = current ~ "\t\t _ll_result = {\n\t\t\t%s\n\t\t}();\n".format(n.code.translate(['\n':"\n\t\t\t"]));
 				current = current ~ "\t} else\n";
 			}
 			current = current ~ "\t throw new Exception(\"Cannot parse.\");\n";
 			current = current ~ "\t return _ll_result;\n";
-			current = current ~ "}\n";
-			writeln(current);
+			current = current ~ "}\n\n";
+			code = code ~ current;
 		}
 		
-		return "";
+		return code;
 	}
 }
