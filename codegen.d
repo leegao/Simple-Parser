@@ -50,7 +50,6 @@ class CodeGen{
 					}
 					i++;
 				}
-				//std.string.translate(current, ['\n':"\n\t\t\t"]);
 				if (types[rule] != "void"){
 					current = current ~ "\t\t_ll_result = (cast(%s delegate()){\n\t\t\t%s\n\t\t})();\n".format(types[rule], n.code.translate(['\n':"\n\t\t\t"]));
 				} else {

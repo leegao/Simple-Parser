@@ -119,25 +119,17 @@ void main(string[] args)
     scope(exit) f.close();
 	
 	f.write(code);*/
-	
-	auto f2 = new std.stream.File("../grammar.y");
+	string file = (args.length > 1) ? args[1] : "grammar.y";
+	auto f2 = new std.stream.File(file);
 	scope(exit) f2.close();
-	import ll_lex;
 	
-	SimpleLexer lex = new SimpleLexer(f2);
-	Token t = lex.read;
-	Scanner scanner = new Scanner;
-	while (t.type != "EOF"){
-		scanner.write(t);
-		t = lex.read;
-	}
-	scanner.write(t);
+	import parser;
+	string code = ll_parse(f2);
 	
-	import test_parser;
-	string code = ll_parse(scanner);
+	writeln(code);
 	
-	auto f = std.stdio.File("../test_parser.d", "w");
-    scope(exit) f.close();
+	//auto f = std.stdio.File("../test_parser.d", "w");
+    //scope(exit) f.close();
 	
-	f.write(code);
+	//f.write(code);
 }
