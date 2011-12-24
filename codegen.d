@@ -23,7 +23,9 @@ class CodeGen{
 		foreach (string rule, Nonterminal[Terminal] productions; table){
 			// set up the function rule
 			string current = "%s parse_%s(Scanner _ll_scanner){\n".format(types[rule],rule);
-			current = current ~ "\t%s _ll_result;\n".format(types[rule]);
+			if (types[rule] != "void"){
+				current = current ~ "\t%s _ll_result;\n".format(types[rule]);
+			}
 			current = current ~ "\tauto _ll_next = _ll_scanner.next;\n";
 			foreach (Terminal t, Nonterminal n; productions){
 				current = current ~ "\tif (_ll_next.type == \"%s\"){\n".format(t.c);
@@ -49,11 +51,17 @@ class CodeGen{
 					i++;
 				}
 				//std.string.translate(current, ['\n':"\n\t\t\t"]);
-				current = current ~ "\t\t_ll_result = {\n\t\t\t%s\n\t\t}();\n".format(n.code.translate(['\n':"\n\t\t\t"]));
+				if (types[rule] != "void"){
+					current = current ~ "\t\t_ll_result = {\n\t\t\t%s\n\t\t}();\n".format(n.code.translate(['\n':"\n\t\t\t"]));
+				} else {
+					current = current ~ "\t\t({\n\t\t\t%s\n\t\t})();\n".format(n.code.translate(['\n':"\n\t\t\t"]));
+				}
 				current = current ~ "\t} else\n";
 			}
 			current = current ~ "\tthrow new Exception(\"Cannot parse.\");\n";
-			current = current ~ "\treturn _ll_result;\n";
+			if (types[rule] != "void"){
+				current = current ~ "\treturn _ll_result;\n";
+			}
 			current = current ~ "}\n\n";
 			code = code ~ current;
 		}

@@ -1,172 +1,189 @@
 import scanner;
 import std.stdio;
 
-string parse_Expression(Scanner _ll_scanner){
-	string _ll_result;
+void parse_nonterminal_expr_(Scanner _ll_scanner){
 	auto _ll_next = _ll_scanner.next;
-	if (_ll_next.type == ">"){
-		string _1 = parse_Operators(_ll_scanner);
-		string _2 = parse_Expression_(_ll_scanner);
-		_ll_result = {
-			writefln("E -> O E': %s %s", _1, _2);
-			return std.string.format("%s %s", _1, _2);
-		}();
-	} else
-	if (_ll_next.type == "<"){
-		string _1 = parse_Operators(_ll_scanner);
-		string _2 = parse_Expression_(_ll_scanner);
-		_ll_result = {
-			writefln("E -> O E': %s %s", _1, _2);
-			return std.string.format("%s %s", _1, _2);
-		}();
-	} else
-	if (_ll_next.type == "+"){
-		string _1 = parse_Operators(_ll_scanner);
-		string _2 = parse_Expression_(_ll_scanner);
-		_ll_result = {
-			writefln("E -> O E': %s %s", _1, _2);
-			return std.string.format("%s %s", _1, _2);
-		}();
-	} else
-	if (_ll_next.type == "-"){
-		string _1 = parse_Operators(_ll_scanner);
-		string _2 = parse_Expression_(_ll_scanner);
-		_ll_result = {
-			writefln("E -> O E': %s %s", _1, _2);
-			return std.string.format("%s %s", _1, _2);
-		}();
-	} else
-	if (_ll_next.type == "."){
-		string _1 = parse_Operators(_ll_scanner);
-		string _2 = parse_Expression_(_ll_scanner);
-		_ll_result = {
-			writefln("E -> O E': %s %s", _1, _2);
-			return std.string.format("%s %s", _1, _2);
-		}();
-	} else
-	if (_ll_next.type == ","){
-		string _1 = parse_Operators(_ll_scanner);
-		string _2 = parse_Expression_(_ll_scanner);
-		_ll_result = {
-			writefln("E -> O E': %s %s", _1, _2);
-			return std.string.format("%s %s", _1, _2);
-		}();
-	} else
-	if (_ll_next.type == "["){
-		string _1 = _ll_scanner.read("[").value;
-		string _2 = parse_Expression(_ll_scanner);
-		string _3 = _ll_scanner.read("]").value;
-		string _4 = parse_Expression_(_ll_scanner);
-		_ll_result = {
-			writefln("E -> [E] E': [%s] %s", _2, _4);
-			return std.string.format("[%s] %s", _2, _4);
-		}();
-	} else
-	throw new Exception("Cannot parse.");
-	return _ll_result;
-}
-
-string parse_Operators(Scanner _ll_scanner){
-	string _ll_result;
-	auto _ll_next = _ll_scanner.next;
-	if (_ll_next.type == ">"){
-		string _1 = _ll_scanner.read(">").value;
-		_ll_result = {
-			writeln(_1); return _1;
-		}();
-	} else
-	if (_ll_next.type == "<"){
-		string _1 = _ll_scanner.read("<").value;
-		_ll_result = {
-			writeln(_1); return _1;
-		}();
-	} else
-	if (_ll_next.type == "+"){
-		string _1 = _ll_scanner.read("+").value;
-		_ll_result = {
-			writeln(_1); return _1;
-		}();
-	} else
-	if (_ll_next.type == "-"){
-		string _1 = _ll_scanner.read("-").value;
-		_ll_result = {
-			writeln(_1); return _1;
-		}();
-	} else
-	if (_ll_next.type == "."){
-		string _1 = _ll_scanner.read(".").value;
-		_ll_result = {
-			writeln(_1); return _1;
-		}();
-	} else
-	if (_ll_next.type == ","){
-		string _1 = _ll_scanner.read(",").value;
-		_ll_result = {
-			writeln(_1); return _1;
-		}();
-	} else
-	throw new Exception("Cannot parse.");
-	return _ll_result;
-}
-
-string parse_Expression_(Scanner _ll_scanner){
-	string _ll_result;
-	auto _ll_next = _ll_scanner.next;
-	if (_ll_next.type == ">"){
-		string _1 = parse_Expression(_ll_scanner);
-		_ll_result = {
-			writefln("E' -> E: %s",_1);return _1;
-		}();
-	} else
-	if (_ll_next.type == "<"){
-		string _1 = parse_Expression(_ll_scanner);
-		_ll_result = {
-			writefln("E' -> E: %s",_1);return _1;
-		}();
-	} else
-	if (_ll_next.type == "+"){
-		string _1 = parse_Expression(_ll_scanner);
-		_ll_result = {
-			writefln("E' -> E: %s",_1);return _1;
-		}();
-	} else
-	if (_ll_next.type == "-"){
-		string _1 = parse_Expression(_ll_scanner);
-		_ll_result = {
-			writefln("E' -> E: %s",_1);return _1;
-		}();
-	} else
-	if (_ll_next.type == "."){
-		string _1 = parse_Expression(_ll_scanner);
-		_ll_result = {
-			writefln("E' -> E: %s",_1);return _1;
-		}();
-	} else
-	if (_ll_next.type == ","){
-		string _1 = parse_Expression(_ll_scanner);
-		_ll_result = {
-			writefln("E' -> E: %s",_1);return _1;
-		}();
-	} else
-	if (_ll_next.type == "["){
-		string _1 = parse_Expression(_ll_scanner);
-		_ll_result = {
-			writefln("E' -> E: %s",_1);return _1;
-		}();
-	} else
-	if (_ll_next.type == "EOF"){
-		string _1 = _ll_scanner.read("EOF").value;
-		_ll_result = {
-			writeln("EOF");return "";
-		}();
-	} else
-	if (_ll_next.type == "]"){
+	if (_ll_next.type == "LL-CODE"){
 		// Nullable production: do not consume anything
-		_ll_result = {
-			return "";
-		}();
+		({
+			// nonterminal_expr_ : \0
+		})();
+	} else
+	if (_ll_next.type == "LL-IDENTIFIER"){
+		parse_nonterminal_expr(_ll_scanner);
+		({
+			// nonterminal_expr_ : nonterminal_expr
+		})();
 	} else
 	throw new Exception("Cannot parse.");
-	return _ll_result;
+}
+
+void parse_rule_stmt_(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "LL-SEMI"){
+		// Nullable production: do not consume anything
+		({
+			// rule_stmt_ : \0
+		})();
+	} else
+	if (_ll_next.type == "LL-OR"){
+		string _1 = _ll_scanner.read("LL-OR").value;
+		parse_rule_stmt(_ll_scanner);
+		({
+			// rule_stmt_ : | rule
+		})();
+	} else
+	throw new Exception("Cannot parse.");
+}
+
+void parse_production_list(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "LL-PRODUCTION"){
+		parse_production_stmt(_ll_scanner);
+		parse_production_list_(_ll_scanner);
+		({
+			// production_list
+		})();
+	} else
+	throw new Exception("Cannot parse.");
+}
+
+void parse_rule_list(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "LL-IDENTIFIER"){
+		string _1 = _ll_scanner.read("LL-IDENTIFIER").value;
+		string _2 = _ll_scanner.read("LL-GETS").value;
+		parse_rule_stmt(_ll_scanner);
+		string _4 = _ll_scanner.read("LL-SEMI").value;
+		parse_rule_list_(_ll_scanner);
+		({
+			// rule_list
+		})();
+	} else
+	throw new Exception("Cannot parse.");
+}
+
+void parse_production_stmt(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "LL-PRODUCTION"){
+		string _1 = _ll_scanner.read("LL-PRODUCTION").value;
+		string _2 = _ll_scanner.read("LL-IDENTIFIER").value;
+		string _3 = _ll_scanner.read("LL-IDENTIFIER").value;
+		({
+			// production_stmt
+		})();
+	} else
+	throw new Exception("Cannot parse.");
+}
+
+void parse_rule_list_(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "EOF"){
+		// Nullable production: do not consume anything
+		({
+			// rule_list_ : \0
+		})();
+	} else
+	if (_ll_next.type == "LL-IDENTIFIER"){
+		parse_rule_list(_ll_scanner);
+		({
+			// rule_list_ : rule
+		})();
+	} else
+	throw new Exception("Cannot parse.");
+}
+
+void parse_nonterminal_expr(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "LL-IDENTIFIER"){
+		string _1 = _ll_scanner.read("LL-IDENTIFIER").value;
+		parse_nonterminal_expr_(_ll_scanner);
+		({
+			// nonterminal_expr : 1*
+		})();
+	} else
+	throw new Exception("Cannot parse.");
+}
+
+void parse_rule_stmt(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "LL-CODE"){
+		string _1 = _ll_scanner.read("LL-CODE").value;
+		parse_rule_stmt_(_ll_scanner);
+		({
+			// rule_stmt : code
+		})();
+	} else
+	if (_ll_next.type == "LL-IDENTIFIER"){
+		parse_nonterminal_expr(_ll_scanner);
+		string _2 = _ll_scanner.read("LL-CODE").value;
+		parse_rule_stmt_(_ll_scanner);
+		({
+			// rule_stmt : nonterminal_expr code
+		})();
+	} else
+	throw new Exception("Cannot parse.");
+}
+
+void parse_production_list_(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "LL-IDENTIFIER"){
+		// Nullable production: do not consume anything
+		({
+			// production_list_ : \0
+		})();
+	} else
+	if (_ll_next.type == "LL-PRODUCTION"){
+		parse_production_list(_ll_scanner);
+		({
+			// production_list_ : production
+		})();
+	} else
+	throw new Exception("Cannot parse.");
+}
+
+void parse_grammar(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "LL-PRODUCTION"){
+		parse_production_list(_ll_scanner);
+		parse_rule_list(_ll_scanner);
+		({
+			// grammar : +productions
+		})();
+	} else
+	if (_ll_next.type == "LL-IDENTIFIER"){
+		parse_rule_list(_ll_scanner);
+		({
+			// grammar : rule_list
+		})();
+	} else
+	throw new Exception("Cannot parse.");
+}
+
+void parse_parser(Scanner _ll_scanner){
+	auto _ll_next = _ll_scanner.next;
+	if (_ll_next.type == "LL-CODE"){
+		string _1 = _ll_scanner.read("LL-CODE").value;
+		parse_grammar(_ll_scanner);
+		string _3 = _ll_scanner.read("EOF").value;
+		({
+			// parser : +usercode
+		})();
+	} else
+	if (_ll_next.type == "LL-PRODUCTION"){
+		parse_grammar(_ll_scanner);
+		string _2 = _ll_scanner.read("EOF").value;
+		({
+			// parser : grammar
+		})();
+	} else
+	if (_ll_next.type == "LL-IDENTIFIER"){
+		parse_grammar(_ll_scanner);
+		string _2 = _ll_scanner.read("EOF").value;
+		({
+			// parser : grammar
+		})();
+	} else
+	throw new Exception("Cannot parse.");
 }
 

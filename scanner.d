@@ -1,5 +1,6 @@
 ﻿module scanner;
 import stack;
+import std.string;
 
 class Token{
 	string value;
@@ -37,7 +38,8 @@ class Scanner{
 	
 	Token read(string type){
 		Token t = read;
-		assert(t.type == type);
+		if (t.type != type)
+			throw new Exception("Expected %s, but got %s(%s)".format(type, t.type, t.value));
 		return t;
 	}
 	

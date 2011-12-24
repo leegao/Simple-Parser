@@ -16,7 +16,7 @@ class SimpleLexer{
 		this.already_read = new stack.Queue!char;
 		whitespace = [' ':true,'\t':true,'\n':true,'\r':true];
 		separators = [' ':true,'\t':true,'\n':true,'\r':true, '|':true, ';':true];
-		reserved = ["|":"LL-OR", "::=":"LL-GETS", "production":"LL-PRODUCTION", ";":"LL-SEMI"];
+		reserved = ["|":"LL-OR", "::=":"LL-GETS", "%production":"LL-PRODUCTION", ";":"LL-SEMI"];
 	}
 	
 	string[string] reserved;// = ["|":"LL-OR", "production":"LL-PRODUCTION"];

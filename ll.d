@@ -59,7 +59,7 @@ abstract class Production{
 			Nonterminal[Terminal] cache;
 			predictive_table[X] = cache;
 			foreach (Nonterminal alpha; nonterminals){
-				Terminal[] first_set = alpha.first;
+				Terminal[] first_set = alpha.first.set;
 				foreach (Terminal t; first_set){
 					if (t.c == "\0"){
 						foreach (Terminal f; FOLLOW[X]){
@@ -67,6 +67,9 @@ abstract class Production{
 							predictive_table[X][f] = alpha;
 						}
 					} else {
+						if (t in predictive_table[X]){
+							writefln("%s,%s : %s ; %s", X, t, predictive_table[X][t].cat, alpha.cat);
+						}
 						assert (!(t in predictive_table[X]));
 						predictive_table[X][t] = alpha;
 					}
