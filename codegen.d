@@ -13,7 +13,7 @@ class CodeGen{
 	}
 	
 	string prolog(){
-		string code = "import scanner;\n";
+		string code = "import scanner, std.string;\n";
 		code = code ~ "%s\n".format(usercode);
 		return code;
 	}
@@ -52,13 +52,13 @@ class CodeGen{
 				}
 				//std.string.translate(current, ['\n':"\n\t\t\t"]);
 				if (types[rule] != "void"){
-					current = current ~ "\t\t_ll_result = {\n\t\t\t%s\n\t\t}();\n".format(n.code.translate(['\n':"\n\t\t\t"]));
+					current = current ~ "\t\t_ll_result = (cast(%s delegate()){\n\t\t\t%s\n\t\t})();\n".format(types[rule], n.code.translate(['\n':"\n\t\t\t"]));
 				} else {
 					current = current ~ "\t\t({\n\t\t\t%s\n\t\t})();\n".format(n.code.translate(['\n':"\n\t\t\t"]));
 				}
 				current = current ~ "\t} else\n";
 			}
-			current = current ~ "\tthrow new Exception(\"Cannot parse.\");\n";
+			current = current ~ "\tthrow new Exception(\"Not expecting first of '%%s' in production %s\".format(_ll_next.type));\n".format(rule);
 			if (types[rule] != "void"){
 				current = current ~ "\treturn _ll_result;\n";
 			}
