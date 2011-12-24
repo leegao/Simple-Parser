@@ -4,7 +4,7 @@ import stack;
 
 void main(string[] args)
 {
-	Production.add_rules([
+/*	Production.add_rules([
 		"production_stmt", "string[]",
 		
 		"nonterminal_expr", "string[]",
@@ -110,6 +110,7 @@ void main(string[] args)
 	Production.construct;
 	
 	CodeGen cg = new CodeGen(Production.predictive_table, Production.types);
+	
 	cg.usercode = "import std.stdio;\n"
 		"import ll;";
 	string code = cg.generate;
@@ -117,7 +118,7 @@ void main(string[] args)
 	auto f = std.stdio.File("../parser.d", "w");
     scope(exit) f.close();
 	
-	f.write(code);
+	f.write(code);*/
 	
 	auto f2 = new std.stream.File("../grammar.y");
 	scope(exit) f2.close();
@@ -132,7 +133,11 @@ void main(string[] args)
 	}
 	scanner.write(t);
 	
-	//import parser;
+	import test_parser;
+	string code = ll_parse(scanner);
 	
-	//parse_parser(scanner);
+	auto f = std.stdio.File("../test_parser.d", "w");
+    scope(exit) f.close();
+	
+	f.write(code);
 }

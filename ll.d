@@ -9,9 +9,13 @@ abstract class Production{
 		assert(rules.length % 2 == 0);
 		for (int i = 0; i < rules.length; i++){
 			auto rule = rules[i++];
-			Production.rules[rule] = std.array.minimallyInitializedArray!(Nonterminal[])(0);
+			//Production.rules[rule] = std.array.minimallyInitializedArray!(Nonterminal[])(0);
 			types[rule] = rules[i];
 		}
+	}
+	
+	override string toString(){
+		return "";
 	}
 	
 	bool nullable = false;
@@ -163,6 +167,10 @@ class Nonterminal : Production{
 	
 	this(string code){
 		this.code = code;	
+	}
+	
+	override string toString(){
+		return "%s".format(cat);
 	}
 	
 	Terminal[] first_cache = null;

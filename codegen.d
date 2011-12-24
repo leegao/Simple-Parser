@@ -13,7 +13,7 @@ class CodeGen{
 	}
 	
 	string prolog(){
-		string code = "import scanner, std.string;\n";
+		string code = "import scanner, std.string, std.stdio;\n";
 		code = code ~ "%s\n".format(usercode);
 		return code;
 	}

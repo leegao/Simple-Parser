@@ -1,7 +1,30 @@
 //terminal LL-CODE LL-PRODUCTION LL-IDENTIFIER LL-GETS LL-OR LL-SEMI EOF
 
 {:
+import ll, ll_lex, codegen;
+string ll_parse(Scanner scanner){
+	string usercode = parse_parser(scanner);
+	
+	Production.compute_follow;
+	Production.construct;
+	
+	CodeGen cg = new CodeGen(Production.predictive_table, Production.types);
+	cg.usercode = usercode;
+	
+	return cg.generate;
+}
 
+string ll_parse(std.stream.InputStream stream){
+	SimpleLexer lex = new SimpleLexer(stream);
+	Token t = lex.read;
+	Scanner scanner = new Scanner;
+	while (t.type != "EOF"){
+		scanner.write(t);
+		t = lex.read;
+	}
+	scanner.write(t);
+	return ll_parse(scanner);
+}
 :}
 
 %production production_stmt string[]
